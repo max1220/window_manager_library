@@ -8,6 +8,15 @@ function WindowManager(window_container, window_template, log_enable) {
 	// callback functions for window manager events
 	this.callbacks = {}
 
+	// set this to false to allow windows outside the bounds of the window_container
+	this.fix_top_view = true
+
+	// enable snapping of windows to the left/right side
+	this.window_snapping = true
+
+	// how close to the border you have to be to snap the window
+	this.snap_range = 2
+
 	// window minimum size for resizing any window(can be overwritten by data-max-w/data-max-h attribute)
 	this.resize_size_limits = {
 		min_w: 300,
@@ -28,7 +37,19 @@ function WindowManager(window_container, window_template, log_enable) {
 		return this.callbacks[name](arg)
 	}
 
-	// implement window click-focus, dragging and resizing by handling mouse events
+	// restore the pointerEvents to the focused iframe
+	let restore_pointer_events = () => {
+		window_container.querySelectorAll(".win-iframe").forEach((e) => {
+			e.style.pointerEvents = e.closest(".win").classList.contains("focused") ? "" : "none"
+		})
+	}
+
+	// Mouse handlers implement window click-focus, dragging and resizing by handling mouse events.
+	// Because iframe elements "eat" mouse events for security purposes, you can't
+	// get mouse events from the parent window if the click lands in an iframe window.
+	// To circumvent problems with moving/resizing/click-focus,
+	// only the currently focused window can actually get mouse events,
+	// and the other iframes have mouse events disabled.
 	let drag_state = undefined
 	let resize_state = undefined
 	this.onmousedown = (e) => {
@@ -75,8 +96,38 @@ function WindowManager(window_container, window_template, log_enable) {
 			drag_state.dy = e.clientY - drag_state.y
 			let left = parseInt(drag_state.win.style.left.substring(0, drag_state.win.style.left.length-2))
 			let top = parseInt(drag_state.win.style.top.substring(0, drag_state.win.style.top.length-2))
-			drag_state.win.style.left = (left + drag_state.dx) + "px"
-			drag_state.win.style.top = (top + drag_state.dy) + "px"
+			let new_x = left + drag_state.dx
+			let new_y = top + drag_state.dy
+			if (this.fix_top_view) {
+				// limit the position of the window to remain visible
+				new_x = Math.min(Math.max(new_x, -drag_state.win.clientWidth*0.8), window.innerWidth - drag_state.win.clientWidth*0.2)
+				new_y = Math.min(Math.max(new_y, 0), window.innerHeight - drag_state.win.titlebar.clientHeight)
+			}
+			if (this.window_snapping) {
+				// snap the window to the top, left or right
+				if ((e.clientY < this.snap_range) || (e.clientX < this.snap_range) || (e.clientX > window.innerWidth-this.snap_range)) {
+					if (e.clientX < this.snap_range) {
+						drag_state.win.classList.add("snapped-left")
+						this.maximize_window(drag_state.win)
+						drag_state.win.style.width = Math.floor(window.innerWidth*0.5) + "px"
+						drag_state.win.restore_state.x = 0
+					} else if (e.clientX > window.innerWidth-this.snap_range) {
+						drag_state.win.classList.add("snapped-right")
+						this.maximize_window(drag_state.win)
+						drag_state.win.style.left = Math.floor(window.innerWidth*0.5) + "px"
+						drag_state.win.style.width = Math.floor(window.innerWidth*0.5) + "px"
+						drag_state.win.restore_state.x = window.innerWidth-drag_state.win.innerWidth
+					} else {
+						this.maximize_window(drag_state.win)
+					}
+					this.update_has_maximized_window()
+					restore_pointer_events()
+					drag_state = undefined
+					return;
+				}
+			}
+			drag_state.win.style.left = new_x + "px"
+			drag_state.win.style.top = new_y + "px"
 			drag_state.x = e.clientX
 			drag_state.y = e.clientY
 			e.preventDefault()
@@ -104,12 +155,7 @@ function WindowManager(window_container, window_template, log_enable) {
 	this.onmouseup = (e) => {
 		if (e.button !== 0) { return; }
 		if (!drag_state && !resize_state) { return; }
-
-		// restore the pointerEvents to the focused iframe
-		window_container.querySelectorAll(".win-iframe").forEach((e) => {
-			e.style.pointerEvents = e.closest(".win").classList.contains("focused") ? "" : "none"
-		})
-
+		restore_pointer_events()
 		this.log("window drag/resize end", drag_state, resize_state)
 		drag_state = undefined
 		resize_state = undefined
@@ -120,7 +166,7 @@ function WindowManager(window_container, window_template, log_enable) {
 	this.update_has_maximized_window = () => {
 		let has_maximized = false
 		window_container.querySelectorAll(".maximized").forEach((e) => {
-			if (!e.classList.contains("minimized")) { has_maximized = true; }
+			if (!(e.classList.contains("minimized") || e.classList.contains("snapped-left") || e.classList.contains("snapped-right"))) { has_maximized = true; }
 		})
 		let has_class = window_container.classList.contains("has-maximized")
 		if (has_maximized && !has_class) {
@@ -359,6 +405,8 @@ function WindowManager(window_container, window_template, log_enable) {
 		if (!win_elem.classList.contains("maximized")) { return; }
 		//console.log("restore", win_elem)
 		win_elem.classList.remove("maximized")
+		win_elem.classList.remove("snapped-left")
+		win_elem.classList.remove("snapped-right")
 		win_elem.style.width = win_elem.restore_state.w
 		win_elem.style.height = win_elem.restore_state.h
 		win_elem.style.left = win_elem.restore_state.x
