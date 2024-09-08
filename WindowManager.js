@@ -104,7 +104,6 @@ function WindowManager(window_container, window_template, log_enable) {
 		if (unmaximize_drag_state) {
 			let dist = Math.sqrt(Math.pow(2, e.clientX-unmaximize_drag_state.x)+Math.pow(2, e.clientY-unmaximize_drag_state.y))
 			if (dist>50) {
-				console.log("unmaximize because of title drag")
 				this.restore_window(unmaximize_drag_state.win)
 				unmaximize_drag_state.win.style.left = e.clientX + "px"
 				unmaximize_drag_state.win.style.top = e.clientY + "px"
