@@ -1,0 +1,33 @@
+/* Windows are always fixed to the viewport, and the code assumes this */
+.win {
+	position: fixed;
+}
+/* Disable pointer events on disabled windows */
+.win.disabled .win-iframe {
+	pointer-events: none;
+}
+/* Hide maximize button on fixed-size windows */
+.win.fixed-size .win-btn-maximize {
+	display: none;
+}
+/* Hide resize indicator on fixed-size windows */
+.win.fixed-size .win-resize-handle {
+	display: none;
+}
+/* Hide maximize button on maximized windows */
+.win.maximized .win-btn-maximize {
+	display: none;
+}
+/* Hide restore indicator on non-maximized windows */
+.win .win-btn-restore {
+	display: none;
+}
+/* Show restore indicator on maximized windows */
+.win.maximized .win-btn-restore {
+	display: unset;
+}
+/* Favicon-sized window icon */
+.win .win-icon {
+	width: 16px;
+	height: 16px;
+}

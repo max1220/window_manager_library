@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Example Dialog Window">
+		<link rel="icon" type="image/x-icon" href="favicon_window.ico">
+		<title>Example Dialog Window</title>
+		<style>
+			body, html {
+				padding: 0 0;
+				margin: 0 0;
+			}
+		</style>
+	</head>
+	<body data-preferred-window-width="250" data-preferred-window-height="140">
+		<h1 id="question_text">Placeholder</h1>
+		<button onclick="wm_client.return_dialog('foo'); wm_client.close('true')">foo</button>
+		<button onclick="wm_client.return_dialog('bar'); wm_client.close('true')">bar</button>
+		<button onclick="wm_client.return_dialog('buzz'); wm_client.close('true')">buzz</button>
+		<script src="WindowClient.js"></script>
+		<script>
+			// get control over this window
+			let wm_client = new WindowClient(window.parent)
+			wm_client.register_message_handler()
+
+			// require a confirm event before closing(to send the dialog return value)
+			wm_client.set_confirm("true")
+			wm_client.callbacks.window_arg = (a) => {
+				window.question_text.innerText = a
+			}
+			wm_client.callbacks.close_confirm = () => {
+				wm_client.return_dialog("close")
+			}
+
+			// resize to fixed dimensions(after possible auto-resize from iframe onload)
+			document.body.onload = () => {
+				//wm_client.set_size(250, 140)
+				wm_client.set_fixed_size("true")
+			}
+			
+		</script>
+	</body>
+</html>

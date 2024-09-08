@@ -1,0 +1,112 @@
+.win {
+	display: flex;
+	flex-direction: column;
+	outline: 1px solid #888;
+	border: 1px solid rgba(255,255,255,0.75);
+	overflow: hidden;
+	box-shadow: 5px 5px 15px rgba(127,127,127,0.5);
+	border-top-left-radius: 9px;
+	border-top-right-radius: 9px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	backdrop-filter: blur(2px);
+	background: linear-gradient(180deg, rgba(255,255,255,0.1) 5%, rgba(255,255,255,0.5) 95% ), linear-gradient(135deg, rgba(128,255,255,0.1) 5%, rgba(255, 128, 255, 0.5) 95% );
+}
+.win.focused {
+	outline: 1px solid #666;
+	box-shadow: 5px 5px 15px rgba(127,127,127,0.9);
+}
+.win.maximized {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+}
+.win.disabled .win-iframe {
+	filter: blur(2px);
+}
+.win .win-titlebar {
+	color: #222;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	padding-right: 5px;
+	height: 25px;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.win.focused .win-titlebar {
+	background-color: rgba(160, 174, 255, 0.267);
+}
+.win.focused .win-title {
+	text-decoration: 1px underline dotted;
+	text-decoration-color: #888;
+}
+.win .win-btn {
+	outline: 1px solid #888;
+	border: 1px solid rgba(255,255,255,0.5);
+	box-shadow: 2px 2px 2px #fff8, -2px -2px 2px #fff8, inset 1px 1px 2px #fff8, inset 0 -2px 4px #fff8;
+	background-color: #8ff4;
+	background-image: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.5) );
+	font-size: 8pt;
+	line-height: 0;
+	width: 22px;
+	height: 17px;
+	margin: 0;
+	padding: 0;
+	align-self: start;
+	backdrop-filter: blur(8px);
+	border-collapse: collapse;
+}
+.win .win-btn:hover {
+	background-color: #0ff6;
+}
+.win .win-btn:active {
+	background-color: #fff2;
+}
+.win .win-btn-minimize {
+	border-bottom-left-radius: 5px;
+}
+.win .win-btn-close {
+	background-color: #f00f;
+	width: 32px;
+	border-bottom-right-radius: 5px;
+}
+.win .win-btn-close:hover {
+	background-color: #f22f
+}
+.win .win-btn-close:active {
+	background-color: #f66f
+}
+.win .win-title {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	flex-grow: 1;
+	text-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 5px #fff , 0 0 5px #fff , 0 0 5px #fff ;
+}
+.win .win-icon {
+	margin: 0 5px;
+	padding: 0;
+	line-height: 1;
+}
+.win .win-iframe {
+	min-height: 0;
+	min-width: 0;
+	border: 1px solid #888;
+	outline: 1px solid #fff;
+	backdrop-filter: blur(4px);
+	background: rgba(255,255,255,0.6);
+	flex-grow: 1;
+	margin: 5px 5px;
+	margin-top: 0;
+}
+.win .win-resize-handle {
+	width: 10px;
+	height: 10px;
+	background-color: #888;
+	border-top-left-radius: 100%;
+	cursor: nwse-resize;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}

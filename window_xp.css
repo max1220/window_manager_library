@@ -1,0 +1,189 @@
+.win {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	box-shadow: 1px 1px 4px #333;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	border: 1px solid #0831D9;
+	box-sizing: border-box;
+}
+.win.focused {
+	box-shadow: 1px 1px 4px #222;
+}
+.win.maximized {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+}
+.win.disabled .win-iframe {
+	filter: blur(2px);
+}
+.win .win-titlebar {
+	height: 26px;
+	min-height: 26px;
+	padding-left: 1px;
+	padding-right: 2px;
+	border-bottom: 1px solid #0831D9;
+	color: #fff;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	user-select: none;
+	display: flex;
+	align-items: center;
+	background: linear-gradient(
+		180deg,
+		#33A9FF,
+		#3072EE 8%,
+		#3070EE 40%,
+		#3385FF 88%,
+		#3385FF 93%,
+		#337CFF 95%,
+		#337CFF 96%,
+		#337CFF
+	)
+}
+.win.focused .win-titlebar {
+	background: linear-gradient(
+		180deg,
+		#0997FF,
+		#0053EE 8%,
+		#0050EE 40%,
+		#0066FF 88%,
+		#0066FF 93%,
+		#005BFF 95%,
+		#005BFF 96%,
+		#005BFF
+	)
+}
+.win .win-btn {
+	border: 1px solid #D3DAFF;
+	border-radius: 3px;
+	font-size: 10pt;
+	font-weight: bold;
+	width: 21px;
+	height: 21px;
+	min-width: 21px;
+	min-height: 21px;
+	padding: 0 0;
+	margin: 0;
+	margin-right: 1px;
+	color: #fff;
+	background-color: #3070EE;
+	background-image: linear-gradient(
+		/* Bottom */
+		0deg,
+		rgba(0,0,0,0.2),
+		rgba(0,0,0,0.1) 16%,
+		rgba(0,0,0,0) 24%
+	),
+	linear-gradient(
+		/* Left */
+		90deg,
+		rgba(255,255,255,0.3),
+		rgba(255,255,255,0.15) 8%,
+		rgba(0,0,0,0) 16%
+	),
+	linear-gradient(
+		/* Top */
+		180deg,
+		rgba(255,255,255,0.15) 8%,
+		rgba(255,255,255,0) 16%
+	),
+	linear-gradient(
+		/* Right */
+		270deg,
+		rgba(0,0,0,0.2),
+		rgba(0,0,0,0.1) 16%,
+		rgba(0,0,0,0) 24%
+	),
+	radial-gradient(
+		/* highlight 1 */
+		at 10% 10%,
+		rgba(255,255,255,0.4),
+		rgba(255,255,255,0.15),
+		rgba(255,255,255,0)
+	),
+	radial-gradient(
+		/* highlight 2 */
+		at 12% 12%,
+		rgba(255,255,255,0.3),
+		rgba(255,255,255,0) 16%
+	);
+}
+.win.focused .win-btn {
+	background-color: #0050EE;
+}
+.win .win-btn:hover {
+	background-color: #1262FF;
+}
+.win .win-btn:active {
+	background-image: linear-gradient(
+		/* Bottom */
+		0deg,
+		rgba(255,255,255,0.2),
+		rgba(255,255,255,0.1) 12%,
+		rgba(255,255,255,0) 20%
+	),
+	linear-gradient(
+		/* Left */
+		90deg,
+		rgba(0,0,0,0.3),
+		rgba(0,0,0,0.15) 12%,
+		rgba(0,0,0,0) 20%
+	),
+	linear-gradient(
+		/* Top */
+		180deg,
+		rgba(0,0,0,0.15) 12%,
+		rgba(0,0,0,0) 20%
+	),
+	linear-gradient(
+		/* Right */
+		270deg,
+		rgba(255,255,255,0.2),
+		rgba(255,255,255,0.1) 12%,
+		rgba(255,255,255,0) 20%
+	);
+}
+.win .win-btn.win-btn-close {
+	background-color: #ee4227;
+}
+.win.focused .win-btn.win-btn-close {
+	background-color: #ED3315;
+}
+.win .win-btn.win-btn-close:hover {
+	background-color: #FF4021;
+}
+
+.win .win-title {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	flex-grow: 1;
+	text-shadow: 1px 1px #0F1089;
+}
+.win .win-icon {
+	margin: 0 5px;
+	padding: 0;
+	line-height: 1.33;
+}
+.win .win-iframe {
+	min-height: 0;
+	min-width: 0;
+	border: 2px outset #166AEE;
+	border-top: none;
+	background: #ECE9D8;
+	flex-grow: 1;
+}
+.win .win-resize-handle {
+	width: 10px;
+	height: 10px;
+	background-color: #888;
+	border-top-left-radius: 100%;
+	cursor: nwse-resize;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}

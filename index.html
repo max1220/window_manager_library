@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Homepage for the max1220 Window Manager Library">
+	<meta name="author" content="max1220">
+	<link rel="icon" type="image/x-icon" href="favicon_window.ico">
+	<title>max1220 Window Manager Library - Homepage</title>
+	<style>
+		:root {
+			--fg-color: #222;
+			--fg2-color: #444;
+			--bg-color: #fff;
+		}
+		body, html {
+			padding: 0 0;
+			margin: 0 0;
+			background-color: var(--bg-color);
+			color: var(--fg-color);
+			font-family: sans-serif;
+			line-height: 1.75;
+		}
+		.content {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 2em;
+		}
+		h2, h3, h4, h5, h6 {
+			color: var(--fg2-color);
+		}
+		.center {
+			margin-left: auto;
+			margin-right: auto;
+			width: fit-content;
+		}
+		code {
+			border: 1px solid #888;
+			border-radius: 4px;
+			padding: 1px 4px;
+		}
+		.lead {
+			font-size: 125%;
+			font-weight: lighter;
+			margin-top: 30px;
+			margin-bottom: 30px;
+			width: fit-content;
+		}
+		a {
+			color: #66f
+		}
+
+		/* The big action buttons at the top of the page */
+		.action-btn {
+			font-weight: lighter;
+			font-size: 20pt;
+			padding: 15px;
+			margin: 15px;
+			border: 2px solid #888;
+			color: var(--fg-color);
+			border-radius: 8px;
+			background-color: rgba(127,127,127,0.1);
+			cursor: pointer;
+		}
+		.action-btn:hover { background-color: rgba(127,127,127,0.2); }
+		.action-btn:active { background-color: rgba(127,127,127,0.3); }
+
+		.btn {
+			padding: 4px;
+			margin: 4px;
+			border: 1px solid #888;
+			color: var(--fg-color);
+			border-radius: 3px;
+			background-color: rgba(127,127,127,0.1);
+			cursor: pointer;
+		}
+		.btn:hover { background-color: rgba(127,127,127,0.2); }
+		.btn:active { background-color: rgba(127,127,127,0.3); }
+
+		.hidden {
+			display: none;
+		}
+
+		/* Make this page automatically switch to darkmode if preferred */
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--fg-color: #fff;
+				--fg2-color: #bbb;
+				--bg-color: #111;
+			}
+		}
+	</style>
+	<link rel="stylesheet" href="window_common.css">
+	<link id="window_style" rel="stylesheet" href="window_flat.css">
+</head>
+<body>
+	<!-- Container for the moveable windows(managed by javascript) -->
+	<div id="window_container"></div>
+	
+	<!-- Regular HTML content -->
+	<div class="content">
+		<h1>max1220 Window Manager Library</h1>
+		<p class="lead">
+			Homepage and documentation for the max1220 Window Manager Library.
+			<br>
+			<div class="center">
+				<button class="action-btn" onclick="wm.add_window('hello_world.html')">Open 'Hello World!' Window</button>
+			</div>
+		</p>
+		<h2>Intro</h2>
+		<p>This library implements a window manager using vanilla JavaScript, CSS and HTML5.</p>
+		<p>
+			The window content displayed in iframes,
+			and the window decoration is configured by specifying a template element to the
+			</code>WindowManager</code> class.
+		</p>
+		<p>
+			All of the window state(minimized, position, size, resizeable etc.) is directly
+			encoded in the classes and style attributes of the window element,
+			making it both easy to style in CSS and broadly compatible.
+		</p>
+		<p>
+			The JavaScript <code>WindowManager</code> class has all the functionality for
+			managing windows on a page(adding new windows, handle dragging of windows, keep window list, etc.),
+			and a separate <code>WindowClient</code> class can be used from within the iframe of such a window
+			for actions related to this window(opening a dialog box, closing itself, etc).
+		</p>
+		<h2>License</h2>
+		<p>
+			The max1220 Window Manager Library is released under the MIT license.<br>
+			See <a href="license.html">license.html</a>
+		</p>
+		<h2>Documentation</h2>
+		<p class="lead">
+			You can view the full documentation <a href="documentation.html">here</a>.(<a href="#" onclick="wm.add_window('documentation.html')">open in window</a>)<br>
+		</p>
+		<h2>Demo</h2>
+		<p class="lead">
+			You can use the buttons below to use the <code>WindowManager</code> instance on this page.
+		</p>
+		<div>
+			<p>
+				You can open a window with a URL.<br>
+				If the domain is cross-origin, some features (like automatic setting of the window title) don't work.
+			</p>
+			<button class="btn" onclick="wm.add_window('hello_world.html')">./hello_world.html</button>
+			<button class="btn" onclick="wm.add_window('documentation.html')">./documentation.html</button>
+			<button class="btn" onclick="wm.add_window('dialog_host.html')">./dialog_host.html</button>
+			<br>
+			<button class="btn" onclick="wm.add_window('https://example.org')">example.org</button>
+			<button class="btn" onclick="wm.add_window('https://jspaint.app')">jspaint.app</button>
+			<button class="btn" onclick="wm.add_window('https://www.openstreetmap.org/export/embed.html')">openstreetmap.org</button>
+			<p>You can change the CSS style used using the buttons below.</p>
+			<button class="btn" onclick="window_style.href='window_flat.css'">window_flat.css</button>
+			<button class="btn" onclick="window_style.href='window_glass.css'">window_glass.css</button>
+			<button class="btn" onclick="window_style.href='window_xp.css'">window_xp.css</button>
+			<button class="btn" onclick="window_style.href='window_98.css'">window_98.css</button>
+			<button class="btn" onclick="window_style.href='window_basic.css'">window_basic.css</button>
+		</div>
+		<h2>Minimized windows</h2>
+		<p>Currently minimized windows(click to restore):</p>
+		<div id="minimized_window_list"></div>
+	</div>
+
+	<!-- Window template instanced by Javascript -->
+	<template id="window_template">
+		<div class="win" style="width: 300px; height: 200px;">
+			<nav class="win-titlebar win-drag-handle">
+				<span class="win-icon">🗔</span>
+				<span class="win-title win-drag-handle">Unnamed window</span>
+				<button class="win-btn win-btn-minimize" onclick="wm.minimize_window(this.closest('.win'))" title="Minimize">▁</button>
+				<button class="win-btn win-btn-restore hidden" onclick="wm.restore_window(this.closest('.win'))" title="Restore">🗗</button>
+				<button class="win-btn win-btn-maximize" onclick="wm.maximize_window(this.closest('.win'))" title="Maximize">🗖</button>
+				<button class="win-btn win-btn-close" onclick="wm.remove_window(this.closest('.win'))" title="Close">🞮</button>
+			</nav>
+			<iframe class="win-iframe"></iframe>
+			<div class="win-resize-handle"></div>
+		</div>
+	</template>
+
+	<!-- Setup the window manager using Javascript -->
+	<script src="WindowManager.js"></script>
+	<script>
+		let wm = new WindowManager(window.window_container, window.window_template)
+		wm.register_mouse_events(window)
+		wm.register_message_events()
+		
+		// update the minimized window list when a window gets minimized/unminimized
+		let minimized_windows = new Map()
+		wm.callbacks.win_minimize = (win) => {
+			let btn = document.createElement("button")
+			btn.innerText = win.title_text.innerText
+			btn.classList.add("btn")
+			btn.onclick = () => wm.unminimize_window(win)
+			minimized_windows.set(win,btn)
+			window.minimized_window_list.appendChild(btn)
+		}
+		wm.callbacks.win_unminimize = (win) => {
+			let btn = minimized_windows.get(win)
+			btn.remove()
+			minimized_windows.delete(win)
+		}
+
+		// hide the HTML content scrollbars if a window is maximized
+		wm.callbacks.wm_has_maximized = (has_maximized) => {
+			if (has_maximized) {
+				document.body.style.overflow = "hidden"
+			} else {
+				document.body.style.overflow = ""
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Window manager dialog host example window">
+		<link rel="icon" type="image/x-icon" href="favicon_window.ico">
+		<title>Dialog Host Example</title>
+		<style>
+			body, html {
+				padding: 0 0;
+				margin: 0 0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Dialog Host Example</h1>
+		<p>
+			You can open a dialog-window, which prevents inputs
+			to the host window(this window) until a value is returned.
+		</p>
+		<button onclick="wm_client.close()">close window</button>
+		<button onclick="wm_client.add_dialog('dialog.html', 'Hello world!')">Open dialog</button>
+		<p id="return_text">(return value from dialog)</p>
+		<script src="WindowClient.js"></script>
+		<script>
+			// get control over this window
+			let wm_client = new WindowClient(window.parent)
+			wm_client.register_message_handler()
+
+			// when a dialog box returns update the return_text element
+			wm_client.callbacks.dialog_return = (return_val) => {
+				window.return_text.innerText = return_val
+			}
+		</script>
+	</body>
+</html>

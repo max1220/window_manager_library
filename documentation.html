@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Documentation for the max1220 Window Manager Library">
+	<meta name="author" content="max1220">
+	<link rel="icon" type="image/x-icon" href="favicon_window.ico">
+	<title>Window Manager Library</title>
+	<style>
+		:root {
+			--fg-color: #222;
+			--fg2-color: #444;
+			--bg-color: #fff;
+		}
+		body, html {
+			padding: 0 0;
+			margin: 0 0;
+			background-color: var(--bg-color);
+			color: var(--fg-color);
+			font-family: sans-serif;
+			line-height: 1.75;
+		}
+		.content {
+			max-width: 950px;
+			margin: 0 auto;
+			padding: 2em;
+		}
+		h2, h3, h4, h5, h6 {
+			color: var(--fg2-color);
+		}
+		pre {
+			background-color: rgba(127,127,127,0.15);
+			padding: 15px;
+			border: 1px solid #888;
+			overflow: auto;
+		}
+		code {
+			background-color: rgba(127,127,127,0.15);
+			padding: 3px 5px;
+			border-radius: 3px;
+		}
+		section {
+			margin-bottom: 30px;
+		}
+		.lead {
+			font-size: 125%;
+			font-weight: lighter;
+			margin: 30px auto;
+			width: fit-content;
+		}
+
+		/* Make this page automatically switch to darkmode if preferred */
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--fg-color: #fff;
+				--fg2-color: #bbb;
+				--bg-color: #111;
+			}
+		}
+	</style>
+</head>
+<body>
+
+<div class="content">
+	<h1>max1220 Window Manager Library - Documentation</h1>
+	<p class="lead">
+		A simple Window management library for the web.<br>
+		Implemented using Vanilla JavaScript, HTML5, and CSS3.
+	</p>
+
+	<section>
+		<h2>Usage</h2>
+		<p>
+			To use the max1220 JavaScript Window manager library, simply instantiate a new <code>WindowManager</code> object, pass the required parameters, and register required event handlers:
+		</p>
+		<pre>let wm = new WindowManager(window_container, window_template, log_enable);
+wm.register_mouse_events(window)
+wm.register_message_events()</pre>
+		<p>
+			The library allows you to manage multiple windows and provides callbacks to handle various window events.
+		</p>
+		<p>
+			You can create a new window by calling the <code>add_window</code> method with a URL to load the content into an iframe. This also supports passing arguments to the window client:
+		</p>
+		<pre>wm.add_window("window.html", { my_arg: "hello world!" })</pre>
+		<p>
+			See also the section <a href="#WindowClient">below</a> about the <code>WindowClient</code>, which makes some functionality of the window manager available to the document inside the iframe.
+		</p>
+		<h3>HTML setup</h3>
+		<p>
+			In order to use this library, you need to load the stylesheet for the window decorations,
+			and create a template HTML element.
+		</p>
+		<pre>&#60;link rel="stylesheet" href="window_common.css"&#62;
+&#60;link rel="stylesheet" href="window_flat.css"&#62; &#60;!-- Theme --&#62;</pre>
+		<pre>&#60;template id="window_template"&#62;
+	&#60;div class="win"&#62;
+		&#60;nav class="win-titlebar win-drag-handle"&#62;
+			&#60;span class="win-icon"&#62;🗔&#60;/span&#62;
+			&#60;span class="win-title win-drag-handle"&#62;Unnamed window&#60;/span&#62;
+			&#60;button class="win-btn win-btn-minimize" onclick="wm.minimize_window(this.closest('.win'))" title="Minimize"&#62;&#9601;&#60;/button&#62;
+			&#60;button class="win-btn win-btn-restore hidden" onclick="wm.restore_window(this.closest('.win'))" title="Restore"&#62;🗗&#60;/button&#62;
+			&#60;button class="win-btn win-btn-maximize" onclick="wm.maximize_window(this.closest('.win'))" title="Maximize"&#62;🗖&#60;/button&#62;
+			&#60;button class="win-btn win-btn-close" onclick="wm.remove_window(this.closest('.win'))" title="Close"&#62;🞮&#60;/button&#62;
+		&#60;/nav&#62;
+		&#60;iframe class="win-iframe"&#62;&#60;/iframe&#62;
+		&#60;div class="win-resize-handle"&#62;&#60;/div&#62;
+	&#60;/div&#62;
+&#60;/template&#62;</pre>
+	</section>
+
+	<section>
+		<h2>Mouse events and iframes</h2>
+		<p>
+			Due to how mouse events and iframes work together(or rather don't),
+			only the currently focused window can receive mouse events.
+			This explains why the first click on a window will focus it, but not send a
+			click event to the iframe. Because iframes eat mouse events it is also necessary to disable mouse
+			input during window moving/resizing.<br>
+			This is done in JavaScript by setting the element <code>pointer-events</code> CSS attribute during moving, resizing, and during focus changes.
+		</p>
+	</section>
+
+	<section>
+		<h2><code>WindowManager</code> Constructor</h2>
+		<p>
+			The <code>WindowManager</code> class manages the creation, interaction, and lifecycle of application windows.<br>
+			It supports dragging, resizing, minimizing/unminimizing, maximizing/restoring, and <code>postMessage()</code>-based interaction between window clients and window manager.
+		</p>
+		<h3><code>WindowManager(window_container, window_template, log_enable)</code></h3>
+		<ul>
+			<li><strong>window_container</strong> - The container element in which all windows will be placed.</li>
+			<li><strong>window_template</strong> - A template element that defines the structure of a window.</li>
+			<li><strong>log_enable</strong> - A boolean flag to enable or disable logging for debugging purposes.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Properties</h2>
+		<ul>
+			<li><code>window_list</code> - An array that holds all the window elements managed by the <code>WindowManager</code>.</li>
+			<li><code>callbacks</code> - An object containing the callback functions for different window events (e.g., <code>win_add</code>, <code>win_remove</code>).</li>
+			<li><code>resize_size_limits</code> - Defines the minimum width and height for resizing windows.</li>
+			<li><code>create_size_limits</code> - Defines the minimum and maximum size limits for newly created windows.</li>
+			<li><code>place</code> - The next position where a new window will be placed.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Methods</h2>
+		<ul>
+			<li>
+				<h3><code>register_mouse_events(elem)</code></h3>
+				<p>
+					Start listening for mouse events from <code>elem</code> that can move or resize windows.<br>
+					Typically <code>elem</code> is simply the global <code>window</code> object(<code>register_mouse_events(window)</code>).<br>
+					Call this function at load to enable movement and resizing of windows.
+				</p>
+			</li>
+			<li>
+				<h3><code>register_message_events()</code></h3>
+				<p>
+					Start listening for message events, triggered by the WindowClient inside the window iframes.<br>
+					Call this function at load to enable child windows to control themselves and create other windows.
+				</p>
+			</li>
+			<li>
+				<h3><code>add_window(url, window_arg)</code></h3>
+				<p>
+					Creates a new window with content loaded from the specified URL.<br>
+					<code>window_arg</code> is transferred to the iframe via postMessage.
+				</p>
+			</li>
+			<li>
+				<h3><code>focus_window(win_elem)</code></h3>
+				<p>
+					Focuses the specified window, bringing it to the front of the window stack and making it possible for this window to receive mouse events.<br>
+					See note on iframes and mouse input.
+				</p>
+			</li>
+			<li>
+				<h3><code>minimize_window(win_elem)</code></h3>
+				<p>Minimizes (hides) the specified window.</p>
+			</li>
+			<li>
+				<h3><code>unminimize_window(win_elem)</code></h3>
+				<p>Unminimizes (shows) the specified window.</p>
+			</li>
+			<li>
+				<h3><code>maximize_window(win_elem)</code></h3>
+				<p>Maximizes the specified window, making it fill the entire container.</p>
+			</li>
+			<li>
+				<h3><code>restore_window(win_elem)</code></h3>
+				<p>Restores a maximized window to its original size and position after being maximized.</p>
+			</li>
+			<li>
+				<h3><code>remove_window(win_elem, force)</code></h3>
+				<p>
+					Removes the specified window from the container.<br>
+					If the window requires confirmation to close, it will ask for it using postMessage unless <code>force</code> is set to <code>true</code>.
+				</p>
+			</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Callbacks</h2>
+		<ul>
+			<li><code>win_add(win_elem)</code> - Triggered when a new window is added.</li>
+			<li><code>win_remove(win_elem)</code> - Triggered when a window is removed.</li>
+			<li><code>win_focus(win_elem)</code> - Triggered when a window is focused.</li>
+			<li><code>win_minimize(win_elem)</code> - Triggered when a window is minimized.</li>
+			<li><code>win_unminimize(win_elem)</code> - Triggered when a window is unminimized.</li>
+			<li><code>win_maximize(win_elem)</code> - Triggered when a window is maximized.</li>
+			<li><code>win_restore(win_elem)</code> - Triggered when a window is restored from maximized state.</li>
+			<li><code>win_resize(resize_state)</code> - Triggered during the resizing of a window.</li>
+			<li><code>win_move(drag_state)</code> - Triggered during the dragging/moving of a window.</li>
+			<li><code>win_onload(win_elem)</code> - Triggered when the window iframe is loaded</li>
+			<li><code>win_message(message_arg)</code> - Triggered when the window manager gets a message from a window client. If this returns truethy the default message handler is not called.</li>
+			<li><code>wm_has_maximized(has_maximized)</code> - Triggered when the window manager gets at least one maximized window, or looses all it's maximized windows.</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Supported Classes</h2>
+		<p>
+			These classes are to be used in the <code>window_template</code>, and are automatically
+			setup with the correct functionality as aproriate.
+		</p>
+		<ul>
+			<li><code>.win</code> - The main class for a window element.</li>
+			<li><code>.win-titlebar</code> - The class for the titlebar, used for double-click maximization.</li>
+			<li><code>.win-title</code> - The class for the window title text. Automatically set from iframe document title if possible.</li>
+			<li><code>.win-drag-handle</code> - The class for elements that handle window dragging.</li>
+			<li><code>.win-resize-handle</code> - The class for elements that handle window resizing.</li>
+			<li><code>.win-btn-minimize</code> - The class for the minimize button.</li>
+			<li><code>.win-btn-maximize</code> - The class for the maximize button.</li>
+			<li><code>.win-btn-restore</code> - The class for the restore button.</li>
+			<li><code>.win-btn-close</code> - The class for the close button.</li>
+			<li><code>.win-icon</code> - The class for the window icon. Will be replaced with an img containing the favicon of the window if possible.</li>
+			<li><code>.win-iframe</code> - The class for the window iframe where the content is loaded.</li>
+		</ul>
+		<p>Additionally the <code>window_container</code> gets the <code>has-maximized</code> class if a window in it is maximized.</p>
+		<h3>Window state classes</h3>
+		<p>
+			These classes are added/removed from a window as it's state changes. 
+		</p>
+		<ul>
+			<li><code>.focused</code> - Applied to a window when it is focused (active) by the user.</li>
+			<li><code>.disabled</code> - Applied to a window when it is not interactable(e.g. waiting for a dialog box)</li>
+			<li><code>.minimized</code> - Applied to a window when it is minimized(hidden).</li>
+			<li><code>.maximized</code> - Applied to a window when it is maximized(fills entire window).</li>
+			<li><code>.fixed-size</code> - Applied to a window when it is not resizeable.</li>
+			<li><code>.fixed-position</code> - Applied to a window when it is not moveable.</li>
+			<li><code>.close-confirm</code> - Applied to a window when closing it requires a confirmation from the window(e.g. to ask for unsaved changes).</li>
+		</ul>
+		<h2>Supported attributes</h2>
+		<p>
+			These attributes can be directly applied to the window element.
+		</p>
+		<ul>
+			<li><code>data-min-w</code> - Minimum width of a resizeable window</li>
+			<li><code>data-min-h</code> - Minimum height of a resizeable window</li>
+			<li><code>data-max-w</code> - Maximum width of a resizeable window</li>
+			<li><code>data-max-h</code> - Maximum height of a resizeable window</li>
+		</ul>
+	</section>
+
+	<hr>
+
+	<section>
+		<h2><a id="WindowClient"><code>WindowClient</code></a> Constructor</h2>
+		<p>
+			The <code>WindowClient</code> is a simple library for use inside a window's iframe document.<br>
+			It enables the window to perform certain window operations on itself(close, focus, maximize, etc.),
+			and enables a window to open other windows, optionally as dialogs with return values that block the input to the host window.
+		</p>
+		<h3><code>WindowClient(wm_window)</code></h3>
+		<ul>
+			<li><strong>wm_window</strong> - Parent window element to post messages to(typically <code>window.parent</code>).</li>
+		</ul>
+	</section>
+
+	<section>
+		<h3>Properties</h3>
+		<ul>
+			<li><code>window_arg</code> - The argument passed to add_window when creating this window.</li>
+			<li><code>callbacks</code> - An object containing the callback functions for different window events (e.g., <code>win_add</code>, <code>win_remove</code>).</li>
+		</ul>
+	</section>
+
+	<section>
+		<h3>Methods</h3>
+		<ul>
+			<li>
+				<h3><code>add_window(url,arg)</code></h3>
+				<p>Add a window to the parent's window manager.</p>
+			</li>
+			<li>
+				<h3><code>close(force)</code></h3>
+				<p>Close this window. If force is set, don't ask for confirmation.</p>
+			</li>
+			<li>
+				<h3><code>focus()</code></h3>
+				<p>Focus this window.</p>
+			</li>
+			<li>
+				<h3><code>maximize()</code></h3>
+				<p>Maximize this window.</p>
+			</li>
+			<li>
+				<h3><code>minimize()</code></h3>
+				<p>Minimize this window.</p>
+			</li>
+			<li>
+				<h3><code>unminimize()</code></h3>
+				<p>Unminimize this window.</p>
+			</li>
+			<li>
+				<h3><code>restore()</code></h3>
+				<p>Restore this window</p>
+			</li>
+			<li>
+				<h3><code>set_fixed_position(is_fixed)</code></h3>
+				<p>disable/enable dragging of this window.</p>
+			</li>
+			<li>
+				<h3><code>set_fixed_size(is_fixed)</code></h3>
+				<p>disable/enable resizing of this window.</p>
+			</li>
+			<li>
+				<h3><code>set_enabled(is_enabled)</code></h3>
+				<p>disable/enable mouse input events to this window.</p>
+			</li>
+			<li>
+				<h3><code>set_confirm(is_enabled)</code></h3>
+				<p>disable/enable asking for confirmation before closing this window.</p>
+			</li>
+			<li>
+				<h3><code>set_size(w,h)</code></h3>
+				<p>Set window size in pixels(sets size of complete window element!).</p>
+			</li>
+			<li>
+				<h3><code>set_position(x,y)</code></h3>
+				<p>Set window position in pixels.</p>
+			</li>
+			<li>
+				<h3><code>set_title(title_text)</code></h3>
+				<p>Set window title text.</p>
+			</li>
+			<li>
+				<h3><code>set_icon(icon_url_or_text)</code></h3>
+				<p>Set window icon. NYI.</p>
+			</li>
+			<li>
+				<h3><code>add_dialog(url, arg)</code></h3>
+				<p>Add a dialog window and disable the current window.</p>
+			</li>
+			<li>
+				<h3><code>return_dialog(arg)</code></h3>
+				<p>Return a value from a dialog window.</p>
+			</li>
+			<li>
+				<h3><code>register_message_handler(arg)</code></h3>
+				<p>Start listening to message events from the parent window manager.</p>
+			</li>
+		</ul>
+	</section>
+
+	<section>
+		<h2>Callbacks</h2>
+		<ul>
+			<li><code>wm_message</code> - Triggered when the client gets any message from the parent window manager</li>
+			<li><code>window_arg</code> - Triggered when the client gets it's window arguments</li>
+			<li><code>dialog_return</code> - Triggered when a dialog this client opened returned it's value.</li>
+			<li><code>close_confirm</code> - Triggered when a window required confirmation before closing. If this callback returns truethy, the window is not closed. </li>
+		</ul>
+	</section>
+
+	<hr>
+
+	<section>
+		<h2>License</h2>
+		<p>
+			The max1220 Window Manager Library is released under the MIT license.<br>
+			See <a href="license.html">license.html</a>
+		</p>
+	</section>
+</div>
+</body>
+</html>

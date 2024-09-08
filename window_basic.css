@@ -1,0 +1,31 @@
+/*
+Basic responsive window.
+Each window gets a fixed position(top, left)
+and width/height element style set by JavaScript,
+and is set to position: fixed; by window_common.css
+*/
+.win {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border: 2px outset #888;
+	background: #eee;
+	color: #000;
+}
+/* make the iframe take up all available space in the window */
+.win .win-iframe {
+	min-height: 0;
+	min-width: 0;
+	flex-grow: 1;
+	border: none;
+}
+/* place resize handle in lower-right corner. */
+.win .win-resize-handle {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 10px;
+	height: 10px;
+	background-color: grey;
+	cursor: nwse-resize;
+}
