@@ -109,14 +109,16 @@ function WindowManager(window_container, window_template, log_enable) {
 					if (e.clientX < this.snap_range) {
 						drag_state.win.classList.add("snapped-left")
 						this.maximize_window(drag_state.win)
-						drag_state.win.style.width = Math.floor(window.innerWidth*0.5) + "px"
+						drag_state.win.style.width = "50%"
 						drag_state.win.restore_state.x = 0
 					} else if (e.clientX > window.innerWidth-this.snap_range) {
 						drag_state.win.classList.add("snapped-right")
+						let cw = drag_state.win.style.width.substring(0, drag_state.win.style.top.length-2)
 						this.maximize_window(drag_state.win)
-						drag_state.win.style.left = Math.floor(window.innerWidth*0.5) + "px"
-						drag_state.win.style.width = Math.floor(window.innerWidth*0.5) + "px"
-						drag_state.win.restore_state.x = window.innerWidth-drag_state.win.innerWidth
+						drag_state.win.style.left = "50%"
+						drag_state.win.style.width = "50%"
+						let nx = document.documentElement.clientWidth-cw
+						drag_state.win.restore_state.x = nx + "px"
 					} else {
 						this.maximize_window(drag_state.win)
 					}
@@ -382,7 +384,7 @@ function WindowManager(window_container, window_template, log_enable) {
 	this.maximize_window = (win_elem) => {
 		if (win_elem.classList.contains("fixed-size") || win_elem.classList.contains("fixed-position")) { return; }
 		if (win_elem.classList.contains("maximized")) { return; }
-		//console.log("maximize", win_elem)
+		this.log("maximize", win_elem)
 		win_elem.classList.add("maximized")
 		win_elem.restore_state = {
 			w: win_elem.style.width,
@@ -403,7 +405,7 @@ function WindowManager(window_container, window_template, log_enable) {
 	// restore a window to it's original size and position after it has been maximized
 	this.restore_window = (win_elem) => {
 		if (!win_elem.classList.contains("maximized")) { return; }
-		//console.log("restore", win_elem)
+		this.log("restore", win_elem)
 		win_elem.classList.remove("maximized")
 		win_elem.classList.remove("snapped-left")
 		win_elem.classList.remove("snapped-right")
@@ -420,7 +422,7 @@ function WindowManager(window_container, window_template, log_enable) {
 
 	// minimize(hide) the window
 	this.minimize_window = (win_elem) => {
-		//console.log("minimize", win_elem)
+		this.log("minimize", win_elem)
 		win_elem.classList.add("minimized")
 		win_elem.classList.remove("focused")
 		win_elem.style.display = "none"
@@ -430,7 +432,7 @@ function WindowManager(window_container, window_template, log_enable) {
 	
 	// unminimize(show after minimize) a window
 	this.unminimize_window = (win_elem) => {
-		//console.log("unminimize", win_elem)
+		this.log("unminimize", win_elem)
 		win_elem.classList.remove("minimized")
 		win_elem.style.display = ""
 		this.focus_window(win_elem)
@@ -443,7 +445,7 @@ function WindowManager(window_container, window_template, log_enable) {
 		if (!win_elem) { win_elem = this.window_list[this.window_list.length-1]}
 		if (!win_elem) { return; }
 		if (win_elem.classList.contains("focused")) { return; }
-		//console.log("focus_window", win_elem)
+		this.log("focus_window", win_elem)
 		//win_elem.iframe.focus()
 		this.window_list.forEach((e) => {
 			e.classList.remove("focused")
@@ -461,11 +463,11 @@ function WindowManager(window_container, window_template, log_enable) {
 	// remove a window
 	this.remove_window = (win_elem, force) => {
 		if (win_elem.classList.contains("close-confirm") && !force) {
-			//console.log("Sending confirmation request to window")
+			this.log("Sending close confirmation request to window")
 			win_elem.iframe.contentWindow.postMessage({command: "close_confirm"})
 			return;
 		}
-		//console.log("removing window", win_elem, force)
+		this.log("removing window", win_elem, force)
 		this.window_list.splice(this.window_list.indexOf(win_elem), 1)
 		win_elem.remove()
 		if (win_elem.classList.contains("focused") && (this.window_list.length > 0)) {

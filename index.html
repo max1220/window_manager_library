@@ -181,7 +181,7 @@
 	<!-- Setup the window manager using Javascript -->
 	<script src="WindowManager.js"></script>
 	<script>
-		let wm = new WindowManager(window.window_container, window.window_template)
+		let wm = new WindowManager(window.window_container, window.window_template, true)
 		wm.register_mouse_events(window)
 		wm.register_message_events()
 		
