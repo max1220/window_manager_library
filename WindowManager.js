@@ -392,6 +392,7 @@ function WindowManager(window_container, window_template, log_enable) {
 			} else {
 				this.maximize_window(win)
 			}
+			unmaximize_drag_state = undefined
 		}
 
 		// add to list of active windows
