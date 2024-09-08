@@ -9,7 +9,7 @@ a simple Window management library for the web, implemented using Vanilla JavaSc
 
 You can preview this repository on GitHub pages:
 
-[https://max1220.github.io/window_manager_library](max1220.github.io/window_manager_library)
+[max1220.github.io/window_manager_library](https://max1220.github.io/window_manager_library)
 
 
 
