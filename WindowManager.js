@@ -52,12 +52,23 @@ function WindowManager(window_container, window_template, log_enable) {
 	// and the other iframes have mouse events disabled.
 	let drag_state = undefined
 	let resize_state = undefined
+	let unmaximize_drag_state = undefined
 	this.onmousedown = (e) => {
 		let win = e.target.closest(".win")
 		if (!win) { return; } // only continue if clicked on a window-related object
 		if (e.button !== 0) { return; } // only LMB is relevant here
 		this.focus_window(win) // always focus a clicked window
-		if (win.classList.contains("maximized")) { return; } // can't drag/resize a maximized window
+		if (win.classList.contains("maximized")) {
+			unmaximize_drag_state = {
+				win: win,
+				x: e.clientX,
+				y: e.clientY,
+			}
+			// prevent the iframes of all windows from eating mouse pointer events
+			window_container.querySelectorAll(".win-iframe").forEach((e) => e.style.pointerEvents = "none")
+			e.preventDefault()
+			return;
+		}
 
 		if (e.target.classList.contains("win-drag-handle")) {
 			if (win.classList.contains("fixed-position")) { return; }
@@ -90,7 +101,21 @@ function WindowManager(window_container, window_template, log_enable) {
 		}
 	}
 	this.onmousemove = (e) => {
-		if (drag_state) {
+		if (unmaximize_drag_state) {
+			let dist = Math.sqrt(Math.pow(2, e.clientX-unmaximize_drag_state.x)+Math.pow(2, e.clientY-unmaximize_drag_state.y))
+			if (dist>50) {
+				console.log("unmaximize because of title drag")
+				this.restore_window(unmaximize_drag_state.win)
+				unmaximize_drag_state.win.style.left = e.clientX + "px"
+				unmaximize_drag_state.win.style.top = e.clientY + "px"
+				drag_state = {
+					win: unmaximize_drag_state.win,
+					x: e.clientX,
+					y: e.clientY
+				}
+				unmaximize_drag_state = undefined
+			}
+		} else if (drag_state) {
 			// move the window by calculating the deltas between cursor positions, and applying that to the window
 			drag_state.dx = e.clientX - drag_state.x
 			drag_state.dy = e.clientY - drag_state.y
