@@ -58,19 +58,20 @@ function WindowManager(window_container, window_template, log_enable) {
 		if (!win) { return; } // only continue if clicked on a window-related object
 		if (e.button !== 0) { return; } // only LMB is relevant here
 		this.focus_window(win) // always focus a clicked window
-		if (win.classList.contains("maximized")) {
-			unmaximize_drag_state = {
-				win: win,
-				x: e.clientX,
-				y: e.clientY,
-			}
-			// prevent the iframes of all windows from eating mouse pointer events
-			window_container.querySelectorAll(".win-iframe").forEach((e) => e.style.pointerEvents = "none")
-			e.preventDefault()
-			return;
-		}
-
 		if (e.target.classList.contains("win-drag-handle")) {
+			// mouse down on a maximized window means start a unmaximize_drag_state
+			if (win.classList.contains("maximized")) {
+				unmaximize_drag_state = {
+					win: win,
+					x: e.clientX,
+					y: e.clientY,
+				}
+				// prevent the iframes of all windows from eating mouse pointer events
+				window_container.querySelectorAll(".win-iframe").forEach((e) => e.style.pointerEvents = "none")
+				e.preventDefault()
+				return;
+			}
+
 			if (win.classList.contains("fixed-position")) { return; }
 			// mouse-down event on a draggable surface of a window, create a drag state
 			drag_state = {
@@ -185,6 +186,7 @@ function WindowManager(window_container, window_template, log_enable) {
 		this.log("window drag/resize end", drag_state, resize_state)
 		drag_state = undefined
 		resize_state = undefined
+		unmaximize_drag_state = undefined
 		e.preventDefault()
 	}
 
