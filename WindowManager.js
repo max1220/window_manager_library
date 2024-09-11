@@ -128,7 +128,7 @@ function WindowManager(window_container, window_template, log_enable) {
 				new_x = Math.min(Math.max(new_x, -drag_state.win.clientWidth*0.8), window.innerWidth - drag_state.win.clientWidth*0.2)
 				new_y = Math.min(Math.max(new_y, 0), window.innerHeight - drag_state.win.titlebar.clientHeight)
 			}
-			if (this.window_snapping) {
+			if (this.window_snapping && !drag_state.win.classList.contains("fixed-size")) {
 				// snap the window to the top, left or right
 				if ((e.clientY < this.snap_range) || (e.clientX < this.snap_range) || (e.clientX > window.innerWidth-this.snap_range)) {
 					if (e.clientX < this.snap_range) {
@@ -250,20 +250,20 @@ function WindowManager(window_container, window_template, log_enable) {
 
 		// handle the command from a WindowClient
 		if (e.data.command == "close") {
-			wm.remove_window(matching_win, e.data.confirm);
+			this.remove_window(matching_win, e.data.confirm);
 		} else if (e.data.command == "dialog_return") {
 			matching_win.parent_win.iframe.contentWindow.postMessage({command: "dialog_return", arg: e.data.arg})
 		} else if (e.data.command == "minimize") {
-			wm.minimize_window(matching_win)
+			this.minimize_window(matching_win)
 		} else if (e.data.command == "unminimize") {
-			wm.unminimize_window(matching_win)
+			this.unminimize_window(matching_win)
 		} else if (e.data.command == "focus") {
-			wm.focus_window(matching_win)
+			this.focus_window(matching_win)
 		} else if (e.data.command == "set_enabled") {
 			if (e.data.enabled == "true") { matching_win.classList.remove("disabled"); }
 			else { matching_win.classList.add("disabled"); }
 		} else if (e.data.command == "add_window") {
-			let win = wm.add_window(e.data.url, e.data.arg);
+			let win = this.add_window(e.data.url, e.data.arg);
 			win.parent_win = matching_win
 		} else if (e.data.command == "set_fixed_position") {
 			if (e.data.fixed == "true") { matching_win.classList.add("fixed-position"); }
@@ -282,6 +282,8 @@ function WindowManager(window_container, window_template, log_enable) {
 			matching_win.style.bottom = e.data.y + "px"
 		} else if (e.data.command == "set_title") {
 			matching_win.title_text.innerText = e.data.title
+		} else if (e.data.command == "broadcast") {
+			this.broadcast(e.data.arg)
 		} else if (e.data.command == "set_icon") {
 			// TODO
 		} else {
@@ -502,5 +504,12 @@ function WindowManager(window_container, window_template, log_enable) {
 		}
 		this.update_has_maximized_window()
 		trigger_callback("win_remove", win_elem)
+	}
+
+	// broadcast arbitrary data to all windows via postMessage
+	this.broadcast = (data) => {
+		this.window_list.forEach((win_elem) => {
+			win_elem.iframe.contentWindow.postMessage({command: "broadcast", arg: data})
+		})
 	}
 }

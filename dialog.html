@@ -24,11 +24,12 @@
 			let wm_client = new WindowClient(window.parent)
 			wm_client.register_message_handler()
 
-			// require a confirm event before closing(to send the dialog return value)
-			wm_client.set_confirm("true")
 			wm_client.callbacks.window_arg = (a) => {
 				window.question_text.innerText = a
 			}
+
+			// require a confirm event before closing(to send the dialog return value)
+			wm_client.set_confirm("true")
 			wm_client.callbacks.close_confirm = () => {
 				wm_client.return_dialog("close")
 			}

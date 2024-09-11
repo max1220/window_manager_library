@@ -16,6 +16,7 @@ function WindowClient(wm_window) {
 	this.set_title =         (t) => wm_window.postMessage({command: "set_title", title: t})
 	this.set_icon =          (i) => wm_window.postMessage({command: "set_icon", icon: i})
 	this.return_dialog =   (arg) => wm_window.postMessage({command: "dialog_return", arg: arg})
+	this.broadcast =         (d) => wm_window.postMessage({command: "broadcast", arg: d})
 
 	// trigger a callback function if present
 	this.callbacks = {}
@@ -46,6 +47,9 @@ function WindowClient(wm_window) {
 				if (!trigger_callback("close_confirm")) {
 					this.close("true")
 				}
+			} else if (e.data.command == "broadcast") {
+				// got generic data broadcast
+				trigger_callback("broadcast")
 			} else {
 				console.warn("Window got unknown message: ", e)
 			}
@@ -53,7 +57,10 @@ function WindowClient(wm_window) {
 	}
 
 	// add a new window, and call callback when this window returns a value
-	this.add_dialog = (url, arg) => {
+	this.add_dialog = (url, arg, return_cb) => {
+		if (return_cb) {
+			this.callbacks.dialog_return = return_cb
+		}
 		this.set_enabled("false")
 		this.add_window(url, arg)
 	}
