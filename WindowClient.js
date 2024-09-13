@@ -19,7 +19,7 @@ function WindowClient(wm_window) {
 	this.broadcast =         (d) => wm_window.postMessage({command: "broadcast", arg: d})
 
 	// trigger a callback function if present
-	this.callbacks = {}
+	this.callbacks = { broadcast_event: {} }
 	let trigger_callback = (name, arg) => {
 		if (!this.callbacks[name]) { return; }
 		return this.callbacks[name](arg)
@@ -49,7 +49,11 @@ function WindowClient(wm_window) {
 				}
 			} else if (e.data.command == "broadcast") {
 				// got generic data broadcast
-				trigger_callback("broadcast")
+				trigger_callback("broadcast", e.data.arg)
+				if (e.data.arg.event && this.callbacks.broadcast_event[e.data.arg.event]) {
+					console.log("broadcast cb:")
+					this.callbacks.broadcast_event[e.data.arg.event](e.data.arg.arg)
+				}
 			} else {
 				console.warn("Window got unknown message: ", e)
 			}
