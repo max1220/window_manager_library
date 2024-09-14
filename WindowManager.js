@@ -25,8 +25,8 @@ function WindowManager(window_container, window_template, log_enable) {
 
 	// size limit for newly created windows who's size can be detected in the iframe's onload()
 	this.create_size_limits = {
-		min_w: 400,
-		min_h: 300,
+		min_w: 300,
+		min_h: 200,
 		max_w: window.innerWidth*0.8,
 		max_h: window.innerHeight*0.8,
 	}
