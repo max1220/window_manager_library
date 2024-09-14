@@ -49,9 +49,10 @@ function WindowClient(wm_window) {
 				}
 			} else if (e.data.command == "broadcast") {
 				// got generic data broadcast
-				trigger_callback("broadcast", e.data.arg)
-				if (e.data.arg.event && this.callbacks.broadcast_event[e.data.arg.event]) {
-					console.log("broadcast cb:")
+				if (trigger_callback("broadcast", e.data.arg)) {
+					// generic all-broadcasts callback handled the message
+				} else if (e.data.arg.event && this.callbacks.broadcast_event[e.data.arg.event]) {
+					console.log("broadcast cb:", e.data.arg.event)
 					this.callbacks.broadcast_event[e.data.arg.event](e.data.arg.arg)
 				}
 			} else {
