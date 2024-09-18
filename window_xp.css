@@ -70,7 +70,7 @@
 	margin: 0;
 	margin-right: 1px;
 	color: #fff;
-	background-position: -1px -1px;
+	background-repeat: space;
 	background-color: #3070EE;
 	background-image: linear-gradient(
 		/* Bottom */
