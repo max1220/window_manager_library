@@ -64,6 +64,7 @@
 	overflow: hidden;
 	white-space: nowrap;
 	flex-grow: 1;
+	line-height: 1.2;
 }
 .win .win-icon {
 	margin: 0 5px;
