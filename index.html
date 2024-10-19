@@ -47,7 +47,8 @@
 			width: fit-content;
 		}
 		a {
-			color: #66f
+			color: #66f;
+			text-decoration: underline;
 		}
 
 		/* The big action buttons at the top of the page */
@@ -100,19 +101,19 @@
 	<!-- Regular HTML content -->
 	<div class="content">
 		<h1>max1220 Window Manager Library</h1>
-		<p class="lead">
+		<div class="lead">
 			Homepage and documentation for the max1220 Window Manager Library.
 			<br>
 			<div class="center">
 				<button class="action-btn" onclick="wm.add_window('hello_world.html')">Open 'Hello World!' Window</button>
 			</div>
-		</p>
+		</div>
 		<h2>Intro</h2>
 		<p>This library implements a window manager using vanilla JavaScript, CSS and HTML5.</p>
 		<p>
 			The window content displayed in iframes,
 			and the window decoration is configured by specifying a template element to the
-			</code>WindowManager</code> class.
+			<code>WindowManager</code> class.
 		</p>
 		<p>
 			All of the window state(minimized, position, size, resizeable etc.) is directly
@@ -125,6 +126,9 @@
 			and a separate <code>WindowClient</code> class can be used from within the iframe of such a window
 			for actions related to this window(opening a dialog box, closing itself, etc).
 		</p>
+		<p>
+			Style sheets for the windows and window content are also provided. 
+		</p>
 		<h2>License</h2>
 		<p>
 			The max1220 Window Manager Library is released under the MIT license.<br>
@@ -132,7 +136,7 @@
 		</p>
 		<h2>Documentation</h2>
 		<p class="lead">
-			You can view the full documentation <a href="documentation.html">here</a>.(<a href="#" onclick="wm.add_window('documentation.html')">open in window</a>)<br>
+			You can view the full documentation <a href="documentation.html">here</a>.(<a onclick="wm.add_window('documentation.html')">open in window</a>)<br>
 		</p>
 		<h2>Demo</h2>
 		<p class="lead">
@@ -144,6 +148,7 @@
 				If the domain is cross-origin, some features (like automatic setting of the window title) don't work.
 			</p>
 			<button class="btn" onclick="wm.add_window('hello_world.html')">./hello_world.html</button>
+			<button class="btn" onclick="wm.add_window('widgets.html')">./widgets.html</button>
 			<button class="btn" onclick="wm.add_window('documentation.html')">./documentation.html</button>
 			<button class="btn" onclick="wm.add_window('dialog_host.html')">./dialog_host.html</button>
 			<br>
@@ -184,6 +189,8 @@
 		let wm = new WindowManager(window.window_container, window.window_template, true)
 		wm.register_mouse_events(window)
 		wm.register_message_events()
+		
+		wm.add_window('widgets.html')
 		
 		// update the minimized window list when a window gets minimized/unminimized
 		let minimized_windows = new Map()

@@ -1,0 +1,64 @@
+/* base */
+body {
+	box-sizing: border-box !important;
+	margin: 0 0;
+	padding: 0 0;
+	user-select: none;
+	font-family: sans-serif;
+	font-size: 12px;
+	line-height: 14px;
+}
+/* /base */
+
+/* utils */
+.hidden {
+	display: none;
+}
+.noselect {
+	user-select: none;
+}
+.overflow-ellipsis {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.nowrap {
+	white-space: nowrap;
+}
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.clear {
+	clear: both;
+}
+
+.p0 { padding: 0; }
+.p1 { padding: 1px; }
+.p2 { padding: 2px; }
+.p3 { padding: 3px; }
+.p4 { padding: 4px; }
+.p5 { padding: 5px; }
+.p6 { padding: 6px; }
+.p7 { padding: 7px; }
+.p8 { padding: 8px; }
+.ma { margin: auto; }
+.m0 { margin: 0; }
+.m1 { margin: 1px; }
+.m2 { margin: 2px; }
+.m3 { margin: 3px; }
+.m4 { margin: 4px; }
+.m5 { margin: 5px; }
+.m6 { margin: 6px; }
+.m7 { margin: 7px; }
+.m8 { margin: 8px; }
+
+.background-disabled {
+	background:
+		repeating-linear-gradient(90deg, transparent, rgba(0,0,0, 0.15) 0px, rgba(0,0,0, 0.15) 1px, rgba(0,0,0, 0) 1px, rgba(0,0,0, 0) 2px),
+		repeating-linear-gradient(transparent, rgba(255,255,255, 0.15) 0px, rgba(255,255,255, 0.15) 1px, rgba(255,255,255, 0) 1px, rgba(255,255,255, 0) 2px)
+	;
+}
+/* /utils */

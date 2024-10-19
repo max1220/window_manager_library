@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="window_inside_common.css">
+		<link rel="stylesheet" id="window_style" href="window_inside_flat.css">
+		<title>Widgets test</title>
+	</head>
+	<body>
+		<div class="window-content p8">
+			<h3>Widgets test</h3>
+			<p>This is a test page for the CSS/HTML widgets.</p>
+			<fieldset class="fieldset p8 m4">
+				<legend>Theme</legend>
+				<button class="btn" onclick="window_style.href='window_inside_flat.css'">flat</button>
+				<button class="btn" onclick="window_style.href='window_inside_glass.css'">glass</button>
+				<button class="btn" onclick="window_style.href='window_inside_xp.css'">xp</button>
+				<button class="btn" onclick="window_style.href='window_inside_98.css'">98</button>
+				<button class="btn" onclick="window_style.href='window_inside_basic.css'">basic</button>
+			</fieldset>
+
+			<h4>Buttons</h4>
+			<div class="container p8 m4">
+				<button class="btn">Normal</button>
+				<button class="btn" disabled>Disabled</button>
+				<button class="btn hover">Hover</button>
+				<button class="btn active">Active</button>
+				<button class="btn focus">Focus</button>
+			</div>
+
+			<h4>Tabs</h4>
+			<div class="tabs m4">
+				<menu role="tablist" aria-label="Example tabs">
+					<button role="tab" aria-controls="tab-foo" aria-selected="true" id="tab-btn-foo" data-tabgroup="example-tabs">Foo</button>
+					<button role="tab" aria-controls="tab-bar" id="tab-btn-bar" data-tabgroup="example-tabs">Bar</button>
+					<button role="tab" aria-controls="tab-buzz" id="tab-btn-buzz" data-tabgroup="example-tabs">Buzz</button>
+				</menu>
+				<div role="tabpanel" aria-labelledby="tab-btn-foo" id="tab-panel-foo" data-tabgroup="example-tabs">
+					<h2>Foo panel</h2>
+				</div>
+				<div role="tabpanel" aria-labelledby="tab-btn-bar" id="tab-panel-bar" data-tabgroup="example-tabs" hidden>
+					<h2>Bar panel</h2>
+				</div>
+				<div role="tabpanel" aria-labelledby="tab-btn-buzz" id="tab-panel-buzz" data-tabgroup="example-tabs" hidden>
+					<h2>Buzz panel</h2>
+				</div>
+			</div>
+
+			<h4>Inputs</h4>
+			<div class="container p8 m4 form">
+				<label class="field-row p3">
+					<span>Text:</span>
+					<input type="text">
+				</label>
+				<label class="field-row p3">
+					<span>Checkbox:</span>
+					<input type="checkbox">
+				</label>
+				<label class="field-row p3">
+					<span>Radio:</span>
+					<input type="radio" name="radio">
+				</label>
+				<label class="field-row p3">
+					<span></span>
+					<input type="radio" name="radio">
+				</label>
+				<label class="field-row p3">
+					<span>Select:</span>
+					<select>
+						<option>Foo</option>
+						<option>Bar</option>
+						<option>Buzz</option>
+					</select>
+				</label>
+				<label class="field-row p3">
+					<span>textarea</span>
+					<textarea></textarea>
+				</label>
+			</div>
+
+			<h4>Menu Bar/Tool Bar/Status Bar</h4>
+			<div class="container p8 m4">
+				<div class="menu-bar">
+					<div class="menu-row">
+						<div class="menu-container">
+							<div class="menu-category">File</div>
+							<div class="menu-sub hidden">
+								<a class="menu-item">Open file...</a>
+								<div class="menu-spacer"></div>
+								<a class="menu-item">New file...</a>
+								<a class="menu-item">Save file...</a>
+								<div class="menu-spacer"></div>
+								<a class="menu-item">Exit</a>
+							</div>
+						</div>
+						<div class="menu-container">
+							<div class="menu-category">Edit</div>
+							<div class="menu-sub hidden">
+								<a class="menu-item">Copy</a>
+								<a class="menu-item">Cut</a>
+								<a class="menu-item">Paste</a>
+								<div class="menu-spacer"></div>
+								<a class="menu-item">Rename...</a>
+								<a class="menu-item">Delete...</a>
+							</div>
+						</div>
+						<div class="menu-container">
+							<div class="menu-category">View</div>
+							<div class="menu-sub hidden">
+								<label class="menu-item">
+									<input type="checkbox" checked>Human-readable
+								</label>
+								<label class="menu-item">
+									<input type="checkbox">Show hidden files
+								</label>
+								<div class="menu-spacer"></div>
+								<label class="menu-item">
+									<input type="checkbox" checked>Select
+								</label>
+								<label class="menu-item">
+									<input type="checkbox" checked>Mode
+								</label>
+								<label class="menu-item">
+									<input type="checkbox" checked>User
+								</label>
+								<label class="menu-item">
+									<input type="checkbox" checked>Group
+								</label>
+								<label class="menu-item">
+									<input type="checkbox" checked>Size
+								</label>
+							</div>
+						</div>
+						<div class="menu-container">
+							<div class="menu-category">Help</div>
+							<div class="menu-sub hidden">
+								<a class="menu-item">About...</a>
+							</div>
+						</div>
+					</div>
+					<div class="menu-row">
+						<button class="btn toolbar-btn">Copy</button>
+						<button class="btn toolbar-btn">Cut</button>
+						<button class="btn toolbar-btn">Paste</button>
+						<div class="toolbar-spacer"></div>
+						<button class="btn toolbar-btn">Refresh</button>
+					</div>
+					<div class="menu-row">
+						<label for="address">Address</label>
+						<div class="form">
+							<input class="toolbar-input" type="text" id="address" style="flex-grow: 1">
+						</div>
+						<button class="toolbar-btn btn">Go</button>
+					</div>
+				</div>
+				<h2>Window content</h2>
+				<p>
+					<br>
+					<br>
+					<br>
+				</p>
+				<div class="status-bar">
+					<div>Left</div>
+					<div>Status bar</div>
+					<div>Right</div>
+				</div>
+			</div>
+
+			<h4>Progress bar</h4>
+			<div class="container p8 m4">
+				0% <progress class="progress" value="00" max="100"></progress>
+				50% <progress class="progress" value="50" max="100"></progress>
+				100% <progress class="progress" value="100" max="100"></progress>
+			</div>
+
+			<h4>Containers</h4>
+			<div class="border p8 m4">border</div>
+			<div class="container p8 m4">container</div>
+			<fieldset class="fieldset p8 m4">
+				<legend>Legend</legend>
+				fieldset
+			</fieldset>
+		</div>
+	</body>
+</html>
+
+

@@ -17,6 +17,12 @@
 	border-radius: 0;
 	box-shadow: none;
 }
+.win.snapped-left {
+	border-right: 1px solid #808080;
+}
+.win.snapped-right {
+	border-left: 1px solid #ffffff;
+}
 .win.disabled .win-iframe {
 	filter: blur(2px);
 }
