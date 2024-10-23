@@ -5,7 +5,7 @@ body {
 /* scrollbar */
 /* TODO: proper scrollbars */
 :root {
-	scrollbar-color: #000 #fff;
+	scrollbar-color: #888 #c0c0c0;
 }
 /* /scrollbar */
 
@@ -72,9 +72,10 @@ body {
 .tabs [role=tabpanel] {
 	z-index: 1100;
 	margin-top: -1px;
-	background-color: #fcfcfc;
+	background-color: silver;
 	color: #050505;
-	border: 2px groove #eee;
+	border: 1px solid #888;
+	border-top: 2px groove #eee;
 	padding: 7px;
 	flex-grow: 1;
 }
@@ -244,7 +245,7 @@ body {
 	border-top: 2px groove #eee;
 	background-color: silver;
 	justify-content: space-between;
-	min-height: 20px;
+	padding: 2px 0;
 }
 /* /status bar */
 
@@ -281,3 +282,9 @@ body {
 	border: 2px groove #eee;
 }
 /* utils */
+
+/* split-view */
+.splitview > *:first-child {
+	border-right: 2px groove #eee;
+}
+/* /split-view */

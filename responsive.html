@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="window_inside_common.css">
+		<link rel="stylesheet" id="window_style" href="window_inside_flat.css">
+		<title>Widgets test</title>
+	</head>
+	<body>
+		<div class="window-content-flex">
+			<div class="menu-bar">
+				<div class="menu-row">
+					<div class="menu-container">
+						<div class="menu-category">File</div>
+						<div class="menu-sub hidden">
+							<a class="menu-item">Open file...</a>
+							<div class="menu-spacer"></div>
+							<a class="menu-item">New file...</a>
+							<a class="menu-item">Save file...</a>
+							<div class="menu-spacer"></div>
+							<a class="menu-item">Exit</a>
+						</div>
+					</div>
+					<div class="menu-container">
+						<div class="menu-category">Theme</div>
+						<div class="menu-sub hidden">
+							<a class="menu-item" onclick="window_style.href='window_inside_flat.css'">flat</a>
+							<a class="menu-item" onclick="window_style.href='window_inside_glass.css'">glass</a>
+							<a class="menu-item" onclick="window_style.href='window_inside_xp.css'">xp</a>
+							<a class="menu-item" onclick="window_style.href='window_inside_98.css'">98</a>
+							<a class="menu-item" onclick="window_style.href='window_inside_basic.css'">basic</a>
+						</div>
+					</div>
+					<div class="menu-container">
+						<div class="menu-category">Help</div>
+						<div class="menu-sub hidden">
+							<a class="menu-item">About...</a>
+						</div>
+					</div>
+				</div>
+				<div class="menu-row">
+					<label for="address">Address</label>
+					<div class="form">
+						<input class="toolbar-input" type="text" id="address" style="flex-grow: 1">
+					</div>
+					<button class="toolbar-btn btn">Go</button>
+				</div>
+			</div>
+	
+			<main>
+				<h2>Responsive test</h2>
+				<p>This center content takes up the entire height</p>
+				<p>
+					Dolor velit commodo sunt voluptate adipisicing officia ipsum nostrud cillum sint ipsum nisi.
+					Dolore consequat deserunt enim non anim.
+					Magna do dolor non dolore cillum culpa ex velit est minim ex in mollit quis.
+					Sint eu ipsum sit ullamco incididunt laborum enim occaecat.
+					Cillum tempor sunt occaecat.
+					Enim eiusmod fugiat Lorem nostrud magna.
+					Veniam nulla aute amet incididunt sunt incididunt sit est excepteur irure est duis deserunt labore.
+					Ut nisi non elit officia ipsum ad proident magna deserunt aute aliqua mollit commodo aute amet.
+				</p>
+			</main>
+			
+			<div class="status-bar">
+				<div>Left</div>
+				<div>Status bar</div>
+				<div>Right</div>
+			</div>
+		</div>
+	</body>
+</html>
+
+

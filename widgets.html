@@ -32,9 +32,9 @@
 			<h4>Tabs</h4>
 			<div class="tabs m4">
 				<menu role="tablist" aria-label="Example tabs">
-					<button role="tab" aria-controls="tab-foo" aria-selected="true" id="tab-btn-foo" data-tabgroup="example-tabs">Foo</button>
-					<button role="tab" aria-controls="tab-bar" id="tab-btn-bar" data-tabgroup="example-tabs">Bar</button>
-					<button role="tab" aria-controls="tab-buzz" id="tab-btn-buzz" data-tabgroup="example-tabs">Buzz</button>
+					<button role="tab" aria-controls="tab-panel-foo" aria-selected="true" id="tab-btn-foo" data-tabgroup="example-tabs" onclick="tab_onclick(event)">Foo</button>
+					<button role="tab" aria-controls="tab-panel-bar" id="tab-btn-bar" data-tabgroup="example-tabs" onclick="tab_onclick(event)">Bar</button>
+					<button role="tab" aria-controls="tab-panel-buzz" id="tab-btn-buzz" data-tabgroup="example-tabs" onclick="tab_onclick(event)">Buzz</button>
 				</menu>
 				<div role="tabpanel" aria-labelledby="tab-btn-foo" id="tab-panel-foo" data-tabgroup="example-tabs">
 					<h2>Foo panel</h2>
@@ -181,7 +181,24 @@
 				<legend>Legend</legend>
 				fieldset
 			</fieldset>
+
+			<h4>Splitview</h4>
+			<div class="container m4">
+				<div class="splitview">
+					<div>
+						<h2>Left</h2>
+						<p>Laboris quis aliqua aliquip occaecat esse amet pariatur deserunt deserunt laboris nisi laboris laborum est.</p>
+					</div>
+					<div>
+						<h2>Right</h2>
+						<p>Sint et exercitation officia minim duis ullamco id qui.</p>
+					</div>
+				</div>
+			</div>
 		</div>
+
+		<!-- Tabs are the only thing that requires JS -->
+		<script src="tab_onclick.js"></script>
 	</body>
 </html>
 

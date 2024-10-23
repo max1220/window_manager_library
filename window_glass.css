@@ -95,7 +95,7 @@
 	border: 1px solid #888;
 	outline: 1px solid #fff;
 	backdrop-filter: blur(4px);
-	background: rgba(255,255,255,0.6);
+	background: rgba(255,255,255,0.5);
 	flex-grow: 1;
 	margin: 5px 5px;
 	margin-top: 0;
@@ -109,4 +109,14 @@
 	position: absolute;
 	bottom: 0;
 	right: 0;
+}
+.win.glass-borderless {
+	backdrop-filter: blur(6px);
+
+}
+.win.glass-borderless .win-iframe {
+	border: none;
+	outline: none;
+	backdrop-filter: none;
+	margin: 0 0;
 }

@@ -244,6 +244,7 @@ body {
 	display: flex;
 	justify-content: space-between;
 	border-top: 1px solid #888;
+	padding: 3px 0;
 }
 /* /status bar */
 
@@ -272,3 +273,9 @@ body {
 	background: #fbfbfb;
 }
 /* utils */
+
+/* split-view */
+.splitview > *:first-child {
+	border-right: 1px solid #888;
+}
+/* /split-view */

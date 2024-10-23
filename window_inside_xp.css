@@ -375,7 +375,7 @@ body {
 	border-top: 1px solid #888;
 	background-color: #EEEAD6;
 	justify-content: space-between;
-	min-height: 20px;
+	padding: 3px 0;
 }
 /* /status bar */
 
@@ -441,3 +441,9 @@ body {
 	font-weight: bold;
 }
 /* utils */
+
+/* split-view */
+.splitview > *:first-child {
+	border-right: 1px solid #888;
+}
+/* /split-view */

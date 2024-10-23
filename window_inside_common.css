@@ -1,5 +1,5 @@
 /* base */
-body {
+html, body {
 	box-sizing: border-box !important;
 	margin: 0 0;
 	padding: 0 0;
@@ -62,3 +62,34 @@ body {
 	;
 }
 /* /utils */
+
+/* content-flex */
+.window-content-flex {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	padding: 0 0;
+	margin: 0 0;
+	overflow: hidden;
+}
+.window-content-flex main {
+	overflow: auto;
+	flex-grow: 1;
+}
+/* /content-flex */
+
+/* split-view */
+.splitview {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+}
+.splitview > * {
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+}
+.splitview > *:first-child {
+	resize: horizontal;
+}
+/* /split-view */
