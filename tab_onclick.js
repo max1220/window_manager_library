@@ -2,7 +2,6 @@
 function tab_onclick(ev) {
 	let tab_button = ev.target
 	let tab_group = tab_button.getAttribute("data-tabgroup")
-	console.log("ct", tab_button.getAttribute("aria-controls"))
 	let tab_panel = document.getElementById(tab_button.getAttribute("aria-controls"))
 	let _tab_group = tab_group.replace(/["\\]/g, '\\$&')
 	let tab_buttons = document.querySelectorAll("[role=tab][data-tabgroup="+_tab_group+"]")

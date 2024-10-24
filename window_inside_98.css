@@ -64,10 +64,12 @@ body {
 	border-top-right-radius: 5px;
 	cursor: pointer;
 	box-shadow: inset -1px -1px #0a0a0a,inset 1px 1px #fff,inset -2px -2px grey,inset 2px 2px #dfdfdf;
+	margin-top: 1px;
 }
 .tabs [role=tablist] [role=tab][aria-selected="true"] {
 	text-decoration: underline;
-	margin-bottom: -2px;
+	margin-top: 0;
+	margin-bottom: -1px;
 }
 .tabs [role=tabpanel] {
 	z-index: 1100;
@@ -76,8 +78,10 @@ body {
 	color: #050505;
 	border: 1px solid #888;
 	border-top: 2px groove #eee;
+	border-bottom: 2px groove #eee;
 	padding: 7px;
 	flex-grow: 1;
+	overflow: auto;
 }
 /* /tabs */
 

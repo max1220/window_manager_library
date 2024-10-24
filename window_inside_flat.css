@@ -69,6 +69,7 @@ body {
 	border: 1px solid #888;
 	padding: 7px;
 	flex-grow: 1;
+	overflow: auto;
 }
 /* /tabs */
 
